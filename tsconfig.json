@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "types": [
+      "node",
+      "@wdio/sync",
+      "@wdio/jasmine-framework"
+    ]
+  },
+  "include": [
+    "./test/**/*.ts"
+  ]
+}
