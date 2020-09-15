@@ -6,7 +6,7 @@ import {reporterConf} from "./reporter.config";
 
 export const config = {
     runner: 'local',
-    baseUrl: 'http://localhost',
+    baseUrl: 'http://mood-feed-frontend-jx.35.224.13.149.nip.io',
     path: '/wd/hub',
 
     framework: 'jasmine',
