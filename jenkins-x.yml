@@ -1,1 +1,12 @@
-buildPack: typescript
+buildPack: none
+pipelineConfig:
+  agent:
+    image: nodejs12x
+  pipelines:
+    pullRequest:
+      build:
+        steps:
+          - name: npm-intall
+            sh: npm install
+          - name: npm-lint
+            sh: npm run lint

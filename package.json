@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint -c .eslintrc.js --ext .ts ./test",
+    "lint": "eslint -c .eslintrc.js --max-warnings=0 --ext .ts ./test",
     "test": "./node_modules/.bin/cross-env VNC_SUPPORT=false DEBUG_TEST=false npm run test:run",
     "test:run": "node ./node_modules/@wdio/cli/bin/wdio.js --spec && npm run report",
     "test:local": "npx wdio wdio.local.conf.js && npm run report && npm run report:open",
