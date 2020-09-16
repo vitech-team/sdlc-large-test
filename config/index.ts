@@ -13,8 +13,7 @@ export const config = {
 
     maxInstances: process.env.DEBUG_TESTS === 'true' ? 1 : 2,
     capabilities: [
-        capabilitiesChromeConfig,
-        capabilitiesFirefoxConfig,
+        capabilitiesChromeConfig
     ],
 
     services: [],
