@@ -7,7 +7,7 @@ export const hooksConfig = {
       outputDir: './reports/html-reports/',
       filename: 'master-report.html',
       reportTitle: 'Master Report',
-      browserName : browser.capabilities.browserName,
+      // browserName : browser.capabilities.browserName,
       // to use the template override option, can point to your own file in the test project:
       // templateFilename: path.resolve(__dirname, '../template/wdio-html-reporter-alt-template.hbs')
     });

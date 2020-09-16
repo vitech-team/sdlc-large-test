@@ -1,4 +1,5 @@
 import {reporterConf} from "../config/reporter.config";
+import {hooksConfig} from "../config/hooks.config";
 
 exports.config = {
     //
@@ -272,5 +273,6 @@ exports.config = {
     //onReload: function(oldSessionId, newSessionId) {
     //}
 
-    ...reporterConf
+    ...reporterConf,
+    ...hooksConfig
 }

@@ -11,20 +11,24 @@ describe('MoodFeed login page', () => {
 
     it('should perform login with Google', () => {
         LoginPage.open();
+        browser.takeScreenshot();
         LoginPage.login(LoginType.GOOGLE);
 
         browser.pause(500);
 
         expect(FeedPage.logo).toExist();
+        browser.takeScreenshot();
     })
 
     it('should perform login with Facebook', () => {
         LoginPage.open();
+        browser.takeScreenshot();
         LoginPage.login(LoginType.FACEBOOK);
 
         browser.pause(500);
 
         expect(FeedPage.logo).toExist();
+        browser.takeScreenshot();
     })
 
 })
