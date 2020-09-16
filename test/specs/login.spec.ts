@@ -16,7 +16,6 @@ describe('MoodFeed login page', () => {
         browser.pause(500);
 
         expect(FeedPage.logo).toExist();
-        browser.takeScreenshot();
     })
 
     it('should perform login with Facebook', () => {
@@ -26,7 +25,6 @@ describe('MoodFeed login page', () => {
         browser.pause(500);
 
         expect(FeedPage.logo).toExist();
-        browser.takeScreenshot();
     })
 
 })

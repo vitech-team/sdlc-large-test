@@ -2,6 +2,7 @@ import {capabilitiesChromeConfig} from './chrome.config';
 import {serverConfig} from './server.config';
 import {testsConfig} from './tests.config';
 import {reporterConf} from "./reporter.config";
+import {hooksConfig} from "./hooks.config";
 
 export const config = {
     runner: 'local',
@@ -19,6 +20,7 @@ export const config = {
 
     ...serverConfig,
     ...testsConfig,
-    ...reporterConf
+    ...reporterConf,
+    ...hooksConfig
 
 };
