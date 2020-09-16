@@ -8,8 +8,8 @@
     "test": "./node_modules/.bin/cross-env VNC_SUPPORT=false DEBUG_TEST=false npm run test:run",
     "test:run": "node ./node_modules/@wdio/cli/bin/wdio.js --spec && npm run report",
     "test:local": "npx wdio wdio.local.conf.js && npm run report && npm run report:open",
-    "report": "allure generate ./allure-results/ --clean",
-    "report:open": "allure open"
+    "report": "npx allure generate ./allure-results/ --clean",
+    "report:open": "npx allure open"
   },
   "keywords": [],
   "author": "",
@@ -32,6 +32,7 @@
   "dependencies": {
     "@types/jasmine": "^3.5.14",
     "@types/jquery": "^3.5.1",
+    "allure-commandline": "^2.13.0",
     "cross-env": "^7.0.2",
     "dotenv": "^8.2.0"
   }
