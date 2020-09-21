@@ -6,7 +6,7 @@ import {hooksConfig} from "./hooks.config";
 
 export const config = {
     runner: 'local',
-    baseUrl: 'http://mood-feed-frontend:80',
+    baseUrl: 'http://mood-feed-frontend-jx.35.224.13.149.nip.io',
     path: '/wd/hub',
 
     framework: 'jasmine',
