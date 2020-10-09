@@ -3,5 +3,7 @@ kind: ConfigMap
 metadata:
   name: {{ template "fullname" . }}-config
 data:
-  git-repo-url: git@github.com:vitech-team/mood-feed-test.git
-  container-image: gcr.io/sdlc-286111/mood-feed-test
+  git-repo-url: {{ .Values.git.url }}
+  imageName: {{ .Values.image.name }}
+  imageTag: {{ .Values.image.tag }}
+  image: {{ .Values.image.name }}:{{ .Values.image.tag }}
