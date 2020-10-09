@@ -1,4 +1,8 @@
 approvers:
-- JenkinsX-Bot
+  - vitech-sdlc
+  - serhiy-krupka-vitech
+  - oleg-ilechko
 reviewers:
-- JenkinsX-Bot
+  - vitech-sdlc
+  - serhiy-krupka-vitech
+  - oleg-ilechko

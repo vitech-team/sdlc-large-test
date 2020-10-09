@@ -7,6 +7,10 @@ image:
   tag: dev
   pullPolicy: IfNotPresent
 
+# optional list of image pull secrets to use to pull images
+jx:
+  imagePullSecrets: []
+
 # define environment variables here as a map of key: value
 env:
 
