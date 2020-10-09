@@ -274,14 +274,16 @@ spec:
               image: gcr.io/jenkinsxio/builder-nodejs12x:latest
               name: build-npm-install
               
-            - args:
-                - source .jx/variables.sh && /kaniko/executor $KANIKO_FLAGS --cache=true --cache-dir=/workspace --context=/workspace/source --dockerfile=/workspace/source/Dockerfile --destination=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION --cache-repo=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/cache
-              command:
-                - /busybox/sh
-                - -c
+            - name: build-container-build
               image: gcr.io/kaniko-project/executor:debug-v0.24.0
-              name: build-container-build
-              
+              script: |
+                source .jx/variables.sh
+                /kaniko/executor $KANIKO_FLAGS --cache=true --cache-dir=/workspace --context=/workspace/source  \
+                  --dockerfile=/workspace/source/Dockerfile \
+                  --destination=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION \
+                  --destination=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:latest \
+                  --cache-repo=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/cache
+
             - args:
                 - source /workspace/source/.jx/variables.sh && jx step changelog --batch-mode --version v${VERSION}
               command:
