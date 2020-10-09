@@ -241,14 +241,6 @@ spec:
               image: gcr.io/jenkinsxio/builder-nodejs12x:latest
               name: build-npm-install
 
-            - args:
-                - CI=true DISPLAY=:99 npm test
-              command:
-                - /bin/sh
-                - -c
-              image: gcr.io/jenkinsxio/builder-nodejs12x:latest
-              name: build-npm-test
-
             - name: npm-lint
               script: npm run lint
 
