@@ -253,14 +253,6 @@ spec:
               image: gcr.io/kaniko-project/executor:debug-v0.24.0
               name: build-container-build
 
-            - args:
-                - source /workspace/source/.jx/variables.sh && jx preview create
-              command:
-                - /bin/bash
-                - -c
-              image: gcr.io/jenkinsxio/jx-cli:latest
-              name: promote-jx-preview
-
           volumes:
             - emptyDir: { }
               name: workspace-volume
