@@ -81,7 +81,7 @@ spec:
             value: $(params.REPO_OWNER)
           - name: REPO_URL
             value: $(params.REPO_URL)
-        resources: { }
+
         taskSpec:
           params:
             - description: git url to clone
@@ -179,7 +179,7 @@ spec:
                 - /bin/sh
               image: gcr.io/jenkinsxio/builder-jx:2.1.32-662
               name: git-clone
-              resources: { }
+
               workingDir: /workspace
             - args:
                 - gitops
@@ -191,7 +191,7 @@ spec:
                 - jx
               image: gcr.io/jenkinsxio/jx-cli:latest
               name: git-setup
-              resources: { }
+
               workingDir: /workspace
             - args:
                 - '[ -d /builder/home ] || mkdir -p /builder && ln -s /tekton/home /builder/home'
@@ -200,7 +200,7 @@ spec:
                 - -c
               image: gcr.io/jenkinsxio/builder-jx:2.1.142-761
               name: setup-builder-home
-              resources: { }
+
             - args:
                 - step
                 - git
@@ -216,7 +216,7 @@ spec:
                 - jx
               image: gcr.io/jenkinsxio/builder-jx:2.1.142-761
               name: git-merge
-              resources: { }
+
             - args:
                 - gitops
                 - variables
@@ -224,31 +224,34 @@ spec:
                 - jx
               image: gcr.io/jenkinsxio/jx-cli:latest
               name: jx-variables
-              resources: { }
+
             - args:
                 - jx step credential -s npm-token -k file -f /builder/home/.npmrc --optional=true
               command:
                 - /bin/sh
                 - -c
-              image: gcr.io/jenkinsxio/builder-nodejs:2.1.150-769
+              image: gcr.io/jenkinsxio/builder-nodejs12x:latest
               name: build-npmrc
-              resources: { }
+
             - args:
                 - npm install
               command:
                 - /bin/sh
                 - -c
-              image: gcr.io/jenkinsxio/builder-nodejs:2.1.150-769
+              image: gcr.io/jenkinsxio/builder-nodejs12x:latest
               name: build-npm-install
-              resources: { }
+
             - args:
                 - CI=true DISPLAY=:99 npm test
               command:
                 - /bin/sh
                 - -c
-              image: gcr.io/jenkinsxio/builder-nodejs:2.1.150-769
+              image: gcr.io/jenkinsxio/builder-nodejs12x:latest
               name: build-npm-test
-              resources: { }
+
+            - name: npm-lint
+              script: npm run lint
+
             - args:
                 - source .jx/variables.sh && /kaniko/executor $KANIKO_FLAGS --cache=true --cache-dir=/workspace --context=/workspace/source --dockerfile=/workspace/source/Dockerfile --destination=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION --cache-repo=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/cache
               command:
@@ -256,15 +259,7 @@ spec:
                 - -c
               image: gcr.io/kaniko-project/executor:debug-v0.24.0
               name: build-container-build
-              resources: { }
-            - args:
-                - source /workspace/source/.jx/variables.sh && jx preview create
-              command:
-                - /bin/bash
-                - -c
-              image: gcr.io/jenkinsxio/jx-cli:latest
-              name: promote-jx-preview
-              resources: { }
+
           volumes:
             - emptyDir: { }
               name: workspace-volume
