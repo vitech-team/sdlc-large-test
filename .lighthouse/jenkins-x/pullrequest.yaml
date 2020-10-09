@@ -241,6 +241,7 @@ spec:
               name: build-npm-install
 
             - name: npm-lint
+              image: gcr.io/jenkinsxio/builder-nodejs12x:latest
               script: npm run lint
 
             - args:
