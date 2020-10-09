@@ -1,7 +1,6 @@
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  creationTimestamp: null
   labels:
     branch: master
     build: "1"
@@ -84,7 +83,7 @@ spec:
             value: $(params.REPO_OWNER)
           - name: REPO_URL
             value: $(params.REPO_URL)
-        resources: { }
+        
         taskSpec:
           params:
             - description: git url to clone
@@ -182,7 +181,7 @@ spec:
                 - /bin/sh
               image: gcr.io/jenkinsxio/builder-jx:2.1.32-662
               name: git-clone
-              resources: { }
+              
               workingDir: /workspace
             - args:
                 - gitops
@@ -194,7 +193,7 @@ spec:
                 - jx
               image: gcr.io/jenkinsxio/jx-cli:latest
               name: git-setup
-              resources: { }
+              
               workingDir: /workspace
             - args:
                 - step
@@ -211,7 +210,7 @@ spec:
                 - jx
               image: gcr.io/jenkinsxio/builder-jx:2.1.142-761
               name: git-merge
-              resources: { }
+              
             - args:
                 - -c
                 - jx step next-version --filename package.json
@@ -219,7 +218,7 @@ spec:
                 - /bin/sh
               image: gcr.io/jenkinsxio/builder-go
               name: next-version
-              resources: { }
+              
             - args:
                 - -c
                 - jx step tag --version $(cat VERSION) --no-apply
@@ -227,7 +226,7 @@ spec:
                 - /bin/sh
               image: gcr.io/jenkinsxio/builder-go
               name: update-version
-              resources: { }
+              
             - args:
                 - -c
                 - 'echo disabled: jx gitops helm template --optional'
@@ -235,7 +234,7 @@ spec:
                 - /bin/sh
               image: gcr.io/jenkinsxio/jx-cli
               name: helm-template
-              resources: { }
+              
             - args:
                 - -c
                 - jx step tag --version $(cat VERSION)
@@ -243,7 +242,7 @@ spec:
                 - /bin/sh
               image: gcr.io/jenkinsxio/builder-go
               name: tag-version
-              resources: { }
+              
             - args:
                 - '[ -d /builder/home ] || mkdir -p /builder && ln -s /tekton/home /builder/home'
               command:
@@ -251,7 +250,7 @@ spec:
                 - -c
               image: gcr.io/jenkinsxio/builder-jx:2.1.142-761
               name: setup-builder-home
-              resources: { }
+              
             - args:
                 - gitops
                 - variables
@@ -259,31 +258,31 @@ spec:
                 - jx
               image: gcr.io/jenkinsxio/jx-cli:latest
               name: jx-variables
-              resources: { }
+              
             - args:
                 - jx step credential -s npm-token -k file -f /builder/home/.npmrc --optional=true
               command:
                 - /bin/sh
                 - -c
-              image: gcr.io/jenkinsxio/builder-nodejs:2.1.150-769
+              image: gcr.io/jenkinsxio/builder-nodejs12x:latest
               name: build-npmrc
-              resources: { }
+              
             - args:
                 - npm install
               command:
                 - /bin/sh
                 - -c
-              image: gcr.io/jenkinsxio/builder-nodejs:2.1.150-769
+              image: gcr.io/jenkinsxio/builder-nodejs12x:latest
               name: build-npm-install
-              resources: { }
+              
             - args:
                 - CI=true DISPLAY=:99 npm test
               command:
                 - /bin/sh
                 - -c
-              image: gcr.io/jenkinsxio/builder-nodejs:2.1.150-769
+              image: gcr.io/jenkinsxio/builder-nodejs12x:latest
               name: build-npm-test
-              resources: { }
+              
             - args:
                 - source .jx/variables.sh && /kaniko/executor $KANIKO_FLAGS --cache=true --cache-dir=/workspace --context=/workspace/source --dockerfile=/workspace/source/Dockerfile --destination=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/$APP_NAME:$VERSION --cache-repo=$DOCKER_REGISTRY/$DOCKER_REGISTRY_ORG/cache
               command:
@@ -291,7 +290,7 @@ spec:
                 - -c
               image: gcr.io/kaniko-project/executor:debug-v0.24.0
               name: build-container-build
-              resources: { }
+              
             - args:
                 - source /workspace/source/.jx/variables.sh && jx step changelog --batch-mode --version v${VERSION}
               command:
@@ -299,7 +298,7 @@ spec:
                 - -c
               image: gcr.io/jenkinsxio/builder-go:2.1.142-761
               name: promote-changelog
-              resources: { }
+              
             - args:
                 - jx gitops helm release
               command:
@@ -307,7 +306,7 @@ spec:
                 - -c
               image: gcr.io/jenkinsxio/jx-cli:latest
               name: promote-helm-release
-              resources: { }
+              
             - args:
                 - source /workspace/source/.jx/variables.sh && jx promote -b --all-auto --timeout 1h --no-poll
               command:
@@ -315,7 +314,7 @@ spec:
                 - -c
               image: gcr.io/jenkinsxio/jx-cli:latest
               name: promote-jx-promote
-              resources: { }
+              
           volumes:
             - emptyDir: { }
               name: workspace-volume
@@ -330,5 +329,4 @@ spec:
     hostNetwork: false
     schedulerName: ""
   serviceAccountName: tekton-bot
-  timeout: 240h0m0s
-status: { }
+  timeout: 1h
