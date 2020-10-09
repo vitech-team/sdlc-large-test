@@ -3,7 +3,6 @@ kind: PipelineRun
 metadata:
   labels:
     branch: master
-    build: "1"
     jenkins.io/pipelineType: build
   name: jenkins-x-quickstarts-node-http-lzpkw-1
 spec:
