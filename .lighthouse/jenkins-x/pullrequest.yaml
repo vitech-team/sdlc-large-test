@@ -5,6 +5,7 @@ metadata:
     branch: master
     build: "1"
     jenkins.io/pipelineType: build
+    owner: jenkins-x-quickstarts
   name: jenkins-x-quickstarts-node-http-lzpkw-1
 spec:
   pipelineSpec:
@@ -179,7 +180,6 @@ spec:
                 - /bin/sh
               image: gcr.io/jenkinsxio/builder-jx:2.1.32-662
               name: git-clone
-
               workingDir: /workspace
             - args:
                 - gitops
@@ -242,6 +242,7 @@ spec:
               name: build-npm-install
 
             - name: npm-lint
+              image: gcr.io/jenkinsxio/builder-nodejs12x:latest
               script: npm run lint
 
             - args:
