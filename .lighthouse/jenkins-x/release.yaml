@@ -1,7 +1,6 @@
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  creationTimestamp: null
   labels:
     branch: master
     build: "1"
@@ -330,5 +329,4 @@ spec:
     hostNetwork: false
     schedulerName: ""
   serviceAccountName: tekton-bot
-  timeout: 240h0m0s
-status: { }
+  timeout: 1h
