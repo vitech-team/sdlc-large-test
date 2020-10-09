@@ -3,7 +3,9 @@ kind: PipelineRun
 metadata:
   labels:
     branch: master
+    build: "1"
     jenkins.io/pipelineType: build
+    owner: jenkins-x-quickstarts
   name: jenkins-x-quickstarts-node-http-lzpkw-1
 spec:
   pipelineSpec:
@@ -178,7 +180,6 @@ spec:
                 - /bin/sh
               image: gcr.io/jenkinsxio/builder-jx:2.1.32-662
               name: git-clone
-
               workingDir: /workspace
             - args:
                 - gitops
@@ -251,6 +252,14 @@ spec:
                 - -c
               image: gcr.io/kaniko-project/executor:debug-v0.24.0
               name: build-container-build
+
+            - args:
+                - source /workspace/source/.jx/variables.sh && jx preview create
+              command:
+                - /bin/bash
+                - -c
+              image: gcr.io/jenkinsxio/jx-cli:latest
+              name: promote-jx-preview
 
           volumes:
             - emptyDir: { }
