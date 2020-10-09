@@ -4,3 +4,4 @@ metadata:
   name: {{ template "fullname" . }}-config
 data:
   git-repo-url: git@github.com:vitech-team/mood-feed-test.git
+  container-image: gcr.io/sdlc-286111/mood-feed-test
