@@ -3,4 +3,4 @@ git:
 
 image:
   name: gcr.io/sdlc-286111/mood-feed-test
-  tag: latest
+  tag: 1.0.12
