@@ -298,14 +298,6 @@ spec:
               image: gcr.io/jenkinsxio/jx-cli:latest
               name: promote-helm-release
               
-            - args:
-                - source /workspace/source/.jx/variables.sh && jx promote -b --all-auto --timeout 1h --no-poll
-              command:
-                - /bin/bash
-                - -c
-              image: gcr.io/jenkinsxio/jx-cli:latest
-              name: promote-jx-promote
-              
           volumes:
             - emptyDir: { }
               name: workspace-volume
