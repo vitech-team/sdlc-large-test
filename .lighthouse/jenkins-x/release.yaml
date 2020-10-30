@@ -161,10 +161,6 @@ spec:
               - name: REPO_URL
                 value: $(params.REPO_URL)
             name: ""
-            resources:
-              requests:
-                cpu: 400m
-                memory: 512Mi
             volumeMounts:
               - mountPath: /home/jenkins
                 name: workspace-volume
