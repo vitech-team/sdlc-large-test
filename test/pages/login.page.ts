@@ -1,35 +1,27 @@
 import Page from "./page";
 
-export enum LoginType {
-    GOOGLE,
-    FACEBOOK,
-}
-
 class LoginPage extends Page {
 
-    get googleLoginBtn() {
-        return $('.login-method-container > div:nth-child(1)')
+    get usernameInp() {
+        return $('input[name=username]');
     }
 
-    get facebookLoginBtn() {
-        return $('.login-method-container > div:nth-child(2)')
+    get passwordInp() {
+        return $('input[name=password]');
+    }
+
+    get loginBtn() {
+        return $('input[name=login]');
     }
 
     open() {
         super.open('login')
     }
 
-    login(type: LoginType) {
-        switch (type) {
-            case LoginType.GOOGLE:
-                this.googleLoginBtn.click();
-                break;
-            case LoginType.FACEBOOK:
-                this.facebookLoginBtn.click();
-                break;
-            default:
-                break;
-        }
+    login(username: string, password: string) {
+        this.usernameInp.setValue(username);
+        this.passwordInp.setValue(password);
+        this.loginBtn.click();
     }
 
 }
