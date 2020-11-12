@@ -1,4 +1,4 @@
-import LoginPage, {LoginType} from '../pages/login.page';
+import LoginPage from '../pages/login.page';
 import FeedPage from '../pages/feed.page';
 
 describe('MoodFeed login page', () => {
@@ -9,21 +9,10 @@ describe('MoodFeed login page', () => {
         browser.takeScreenshot();
     })
 
-    it('should perform login with Google', () => {
+    it('should perform login', () => {
         LoginPage.open();
         browser.takeScreenshot();
-        LoginPage.login(LoginType.GOOGLE);
-
-        browser.pause(500);
-
-        expect(FeedPage.logo).toExist();
-        browser.takeScreenshot();
-    })
-
-    it('should perform login with Facebook', () => {
-        LoginPage.open();
-        browser.takeScreenshot();
-        LoginPage.login(LoginType.FACEBOOK);
+        LoginPage.login('homer', '123QWEasd');
 
         browser.pause(500);
 
