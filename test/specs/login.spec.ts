@@ -1,7 +1,7 @@
 import LoginPage from '../pages/login.page';
 import FeedPage from '../pages/feed.page';
 
-describe('MoodFeed login page', () => {
+describe('AA-1 MoodFeed login page', () => {
 
     it('should have the right title', () => {
         LoginPage.open();

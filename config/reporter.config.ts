@@ -5,6 +5,12 @@ const log4js = require("log4js");
 export const reporterConf = {
 
     reporters: ['spec',
+        ['json', {
+            outputDir: './reports/json/',
+            outputFileFormat: function (opts) {
+                return `results-${opts.cid}.${opts.capabilities}.json`
+            }
+        }],
         [HtmlReporter, {
             debug: true,
             outputDir: './reports/html-reports/',
