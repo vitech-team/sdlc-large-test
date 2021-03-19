@@ -119,11 +119,21 @@ class TestRail {
         return result;
     }
 
+    /**
+     * Returns current date in 'Mon Jan 1 2020' format
+     * @return {string}
+     */
     getDateNow() {
         let now = new Date(Date.now())
         return now.toDateString()
     }
 
+    /**
+     * Creates testRun in TestRail via API
+     * @param cases - array test cases
+     * @param testRunName
+     * @return testRunId of created testRun
+     */
     addTestRun(cases, testRunName = `Test run ${this.getDateNow()}`) {
         let requestBody = {
             "name": testRunName,
@@ -134,16 +144,27 @@ class TestRail {
         return response['id'];
     }
 
-
-    addTestCase(fullTitle, sectionId) {
+    /**
+     * Creates testCase in TestRail via API
+     * @param title
+     * @param sectionId
+     * @param issueID
+     * @return testCaseId of created testCase
+     */
+    addTestCase(title, sectionId, issueID) {
         let requestBody = {
-            "title": fullTitle,
-            // "custom_test_case_unique_name": this.getTestCaseUniqueName(fullTitle)
+            "title": title,
+            "refs": issueID
         }
         let response = this._post(`add_case/${sectionId}`, requestBody)
         return response['id']
     }
 
+    /**
+     * Creates Section in TestRail via API
+     * @param name
+     * @return sectionId of created section
+     */
     addSectionId(name) {
         let requestBody = {
             "name": name
@@ -152,6 +173,13 @@ class TestRail {
         return response['id']
     }
 
+    /**
+     * Gets data from api endpoint and returns data matched to key and value
+     * @param api
+     * @param key
+     * @param value
+     * @return {{}}
+     */
     getDataDictFromApiByParams(api, key, value) {
         let data = this._get(api)
         let dict = {};
@@ -161,28 +189,41 @@ class TestRail {
         return dict
     }
 
-
-    getTestCaseIdByTitle(fullTitle, sectionId) {
+    /**
+     * Gets testCaseId based on title and section
+     * in cases there is no such testCase in section, it will be created
+     * @param title
+     * @param sectionId
+     * @param issueId
+     * @return testCaseId
+     */
+    getTestCaseIdByTitle(title, sectionId, issueId) {
         let data = this.getDataDictFromApiByParams(`get_cases/${this.options.projectKey}&section_id=${sectionId}`, 'title', 'id')
         // let testCaseUniqueName = this.getTestCaseUniqueName(fullTitle);
         let cases = [];
         for (let name in data) {
-            if (name === fullTitle) {
+            if (name === title) {
                 cases.push(data[name])
             }
         }
         if (cases.length > 1) {
-            return new Error(`In section ${sectionId} were found ${cases.length} cases with the same method name - ${testCaseUniqueName}`)
+            throw new Error(`In section ${sectionId} were found ${cases.length} cases with the same test case name - ${title}`)
         } else if (cases.length === 0) {
-            return this.addTestCase(fullTitle, sectionId)
+            return this.addTestCase(title, sectionId, issueId)
         } else {
             return cases[0]
         }
     }
-
+    /**
+     * Gets sectionId based on title
+     * in cases there is no such section, it will be created
+     * @param title
+     * @param section_name
+     * @return sectionId
+     */
     getSectionIdByTitle(section_name, title) {
         if (section_name === undefined) {
-            return new Error(`TestCase "${title}" does not have suite name, please add it`)
+            throw new Error(`TestCase "${title}" does not have suite name, please add it`)
         }
         let data = this.getDataDictFromApiByParams(`get_sections/${this.options.projectKey}`, 'name', 'id')
         let sections = [];
@@ -192,7 +233,7 @@ class TestRail {
             }
         }
         if (sections.length > 1) {
-            return new Error(`In project ${this.options.projectKey} were found ${sections.length} cases with the same method name - ${name}`)
+            throw new Error(`In project ${this.options.projectKey} were found ${sections.length} sections with the same section name - ${name}`)
         } else if (sections.length === 0) {
             return this.addSectionId(section_name)
         } else {
@@ -200,6 +241,11 @@ class TestRail {
         }
     }
 
+    /**
+     * Publish results into Test Rail via API
+     * @param cases
+     * @param results
+     */
     publishResults(cases, results) {
         let testRunId = this.addTestRun(cases);
         let requestBody = {
